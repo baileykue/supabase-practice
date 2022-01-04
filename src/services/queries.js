@@ -25,13 +25,21 @@ export async function getMovieByTitle(title) {
 }
 
 export async function getOldestMovie() {
-  // return the oldest movie (assume the database is not sorted)
+  const response = await client.from('movies').select('title').gt('year', 0).limit(1).single();
+  return checkError(response);
 }
 
 export async function getMoviesAfter(year) {
-  // return movies made after the year passed in
+  const response = await client.from('movies').select('*').gt('year', year);
+  return checkError(response);
 }
 
 export async function getHighestGrossingMovie() {
-  // return movie with the highest box office total
+  const response = await client
+    .from('movies')
+    .select('*')
+    .order('box_office', { ascending: false })
+    .limit(1)
+    .single();
+  return checkError(response);
 }
